@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Estoque",
+    "slug": "Estoque",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
