@@ -7,7 +7,7 @@ const Login = ({ navigation }) => {
   const [senha, setSenha] = useState('');
 
   const handleLogin = () => {
-    axios.post('http://192.168.1.106:3000/login', { email: email, password: senha })
+    axios.post('http://172.17.112.215:3000/login', { email: email, password: senha })
       .then(response => {
         Alert.alert('Login bem-sucedido', `Bem-vindo, ${response.data.nome}`);
         navigation.navigate('Lista');
