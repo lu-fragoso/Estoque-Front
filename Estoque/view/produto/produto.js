@@ -37,18 +37,32 @@ export default function Produto() {
   };
   
 
-  const cadastrarProduto = () => {
-    axios.post('http://192.168.1.106:3000/registerproduct', { name: produto, description: descricao, image: foto, price: valor })
-    .then(response => {
-      Alert.alert('Produto cadastrado', `Nome do Produto: ${produto}, Descrição: ${descricao}, Imagem ${foto}, Valor: ${valor}`);
+  const cadastrarProduto = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('name', produto);
+      formData.append('description', descricao);
+      formData.append('price', valor);
+      formData.append('image', {
+        uri: foto,
+        type: 'image/jpeg', // ou o tipo correto da imagem
+        name: 'image.jpg',
+      });
+  
+      const response = await axios.post('http://172.17.112.215:3000/registerproduct', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      Alert.alert('Produto cadastrado', `Nome do Produto: ${produto}, Descrição: ${descricao}, Valor: ${valor}`);
       setProduto('');
       setDescricao('');
       setValor('');
       setFoto('');
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error('Erro:', error);
-    });
+    }
   };
 
   return (
