@@ -17,28 +17,26 @@ const ListaProdutos = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View styles={styles.container}>
-      
-      <FlatList
-        data={produtos}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Detalhes', { produto: item , usuario})}>
-            <View  style={styles.flat}>
-              <Text>{item.nome}</Text>
-              <Text>{item.descricao}</Text>
-              <Text>{item.valor}</Text>
-            </View>
-          </TouchableOpacity>
-      )}
-      />
+    <View style={styles.container}>
+        <FlatList
+            data={produtos}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => navigation.navigate('Detalhes', { produto: item , usuario})}>
+                    <View style={styles.flat}>
+                        <Text>{item.nome}</Text>
+                        <Text>{item.descricao}</Text>
+                        <Text>{item.valor}</Text>
+                    </View>
+                </TouchableOpacity>
+            )}
+        />
 
-      <TouchableOpacity style={styles.newProduct} onPress={() => navigation.navigate('Produto',{usuario})}>
-        <Text style={styles.iconButton}>+</Text>
-      </TouchableOpacity>
-
+        <TouchableOpacity style={styles.newProduct} onPress={() => navigation.navigate('Produto',{usuario})}>
+            <Text style={styles.iconButton}>+</Text>
+        </TouchableOpacity>
     </View>
-  );
+);
 };
 
 const styles = StyleSheet.create({
@@ -65,8 +63,8 @@ const styles = StyleSheet.create({
       position: 'absolute',
       bottom:30,
       left: 30,
-      width: 50,
-      height: 50,
+      width: 60,
+      height: 60,
       borderRadius: 50,
       backgroundColor: '#000000',
       alignItems: 'center',
