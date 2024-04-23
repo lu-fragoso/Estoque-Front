@@ -1,17 +1,34 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, Image, Button, Modal, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, Modal, TextInput, FlatList, Alert } from 'react-native';
 
-const DetalhesDoProduto = ({ route }) => {
+
+const DetalhesDoProduto = ({ navigation,route }) => {
     const { produto, usuario } = route.params;
-    const imageUrl = `http://192.168.1.106:3000/${produto.image}`; // Construa o URL completo para a imagem
-  
+    const imageUrl = `http://172.17.115.241:3000/${produto.image}`; // Construa o URL completo para a imagem
+
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalEditVisible, setModalEditVisible] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [productQuantity, setProductQuantity] = useState(0);
     const [actionType, setActionType] = useState(null);
+    const [logOcorrencias, setLogOcorrencias] = useState([]);
+    const [nomeProduto, setNomeProduto] = useState(produto.nome);
+    const [descricaoProduto, setDescricaoProduto] = useState(produto.descricao);
+    const [precoProduto, setPrecoProduto] = useState(produto.valor);
+
+    const fetchLogOcorrencias = () => {
+      fetch(`http://172.17.115.241:3000/products/${produto.id}/logs`)
+          .then(response => response.json())
+          .then(data => setLogOcorrencias(data))
+          .catch(error => console.error(error));
+  };
+
+    useEffect(() => {
+      fetchLogOcorrencias()
+  }, [logOcorrencias]);
 
     const fetchProductQuantity = () => {
-        fetch(`http://192.168.1.106:3000/products/${produto.id}/qtd`)
+        fetch(`http://172.17.115.241:3000/products/${produto.id}/qtd`)
             .then(response => response.json())
             .then(data => setProductQuantity(data.quantidade))
             .catch(error => console.error(error));
@@ -20,6 +37,70 @@ const DetalhesDoProduto = ({ route }) => {
     useEffect(() => {
         fetchProductQuantity();
     }, [quantity]);
+
+    const editarProduto = () => {
+      setModalEditVisible(true)
+    };
+
+    const confirmarEdicao = () => {
+      fetch(`http://172.17.115.241:3000/products/${produto.id}/edit`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: nomeProduto,
+          description: descricaoProduto,
+          price: parseFloat(precoProduto,2),
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Produto editado com sucesso!');
+            setModalEditVisible(false);
+          } else {
+            alert('Erro ao editar produto');
+            console.log(nomeProduto,descricaoProduto,parseFloat(precoProduto,2))
+            console.error('Erro ao editar produto:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao editar produto:', error);
+        });
+    };
+
+    const excluirProduto = () => {
+      Alert.alert(
+        "Excluir Produto",
+        "Tem certeza de que deseja excluir este produto?",
+        [
+          {
+            text: "Cancelar",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "OK", onPress: () => {
+            fetch(`http://172.17.115.241:3000/products/${produto.id}/delete`, {
+              method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('Produto excluído com sucesso!');
+                navigation.navigate('Lista', usuario)
+              } else {
+                alert('Erro ao excluir produto');
+              }
+            })
+            .catch(error => {
+              console.error('Erro ao excluir produto:', error);
+            });
+          }}
+        ],
+        { cancelable: false }
+      );
+    };
 
     const adicionarProduto = () => {
         setActionType('adição');
@@ -42,7 +123,7 @@ const DetalhesDoProduto = ({ route }) => {
             return;
         }
     
-        fetch(`http://192.168.1.106:3000/products/${produto.id}/edit`, {
+        fetch(`http://172.17.115.241:3000/products/${produto.id}/editquantidade`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -67,11 +148,6 @@ const DetalhesDoProduto = ({ route }) => {
         });
     };
 
-
-    
-
-
-
     return (
       <View style={styles.container}>
         <Image
@@ -83,8 +159,59 @@ const DetalhesDoProduto = ({ route }) => {
         <Text style={styles.price}>{produto.valor}</Text>
         <Text style={styles.quantity}>Quantidade: {productQuantity}</Text>
 
-        <Button title="Remover" onPress={removerProduto} />
-        <Button title="Adicionar" onPress={adicionarProduto} />
+
+        <FlatList
+            data={logOcorrencias}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.logItem}>
+              <Text style={styles.logText}>Usuário: {item.usuario_id}</Text>
+              <Text style={styles.logText}>Data: {item.data_hora}</Text>
+              <Text style={styles.logText}>Tipo de Movimentação: {item.tipo}</Text>
+              <Text style={styles.logText}>Quantidade: {item.quantidade}</Text>
+          </View>
+            )}
+        />
+        <Button title="Remover Quantidade" onPress={removerProduto} />
+        <Button title="Adicionar Quantidade" onPress={adicionarProduto} />
+        <Button title="Editar Produto" onPress={editarProduto} />
+        <Button title="Excluir Produto" onPress={excluirProduto} />
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalEditVisible}
+          onRequestClose={() => {
+            setModalEditVisible(!modalEditVisible);
+          }}
+        >
+           <View style={styles.centeredView}>
+             <View style={styles.modalView}>
+               <Text style={styles.modalText}>Editar Produto</Text>
+               <TextInput
+            style={styles.input}
+            onChangeText={setNomeProduto}
+            value={nomeProduto}
+            placeholder="Nome do Produto"
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setDescricaoProduto}
+            value={descricaoProduto}
+            placeholder="Descrição do Produto"
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setPrecoProduto}
+            value={precoProduto.toString()}
+            placeholder="Preço do Produto"
+            keyboardType="numeric"
+          />
+               <Button title="Confirmar" onPress={confirmarEdicao} />
+               <Button title="Cancelar" onPress={()=> {setModalEditVisible(false)}} />
+             </View>
+           </View>
+         </Modal>
 
         <Modal
           animationType="slide"
@@ -127,6 +254,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
+  logItem: {
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+},
+logText: {
+    fontSize: 14,
+},
   modalView: {
     margin: 20,
     backgroundColor: 'white',
@@ -156,7 +293,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   description: {
     fontSize: 16,
@@ -167,8 +304,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 200, // Defina a largura da imagem
-    height: 200, // Defina a altura da imagem
+    width: 50, 
+    height: 50, 
+    backgroundColor: '#ccc', 
   },
 });
 
