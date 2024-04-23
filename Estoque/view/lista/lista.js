@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const ListaProdutos = ({ navigation }) => {
+const ListaProdutos = ({ navigation, route }) => {
   const [produtos, setProdutos] = useState([]);
+  const {usuario}  = route.params;
 
   useEffect(() => {
-    axios.get('http://172.17.112.215:3000/product')
+    axios.get('http://192.168.1.106:3000/product')
       .then(response => {
         setProdutos(response.data);
       })
@@ -22,7 +23,7 @@ const ListaProdutos = ({ navigation }) => {
         data={produtos}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Detalhes', { produto: item })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Detalhes', { produto: item , usuario})}>
             <View  style={styles.flat}>
               <Text>{item.nome}</Text>
               <Text>{item.descricao}</Text>
@@ -32,7 +33,7 @@ const ListaProdutos = ({ navigation }) => {
       )}
       />
 
-      <TouchableOpacity style={styles.newProduct} onPress={() => navigation.navigate('Produto')}>
+      <TouchableOpacity style={styles.newProduct} onPress={() => navigation.navigate('Produto',{usuario})}>
         <Text style={styles.iconButton}>+</Text>
       </TouchableOpacity>
 
