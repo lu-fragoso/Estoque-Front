@@ -89,9 +89,13 @@ export default function Produto({route}) {
         onChangeText={setValor}
         keyboardType="numeric"
       />
-      <Button title="Escolher Foto" onPress={escolherFotoDaGaleria} />
+      <View style={{ marginBottom: 10 }}>
+        <Button title="Escolher Foto" onPress={escolherFotoDaGaleria} color='gray' />
+      </View>
       {foto && <Image source={{ uri: foto }} style={styles.image} />}
-      <Button title="Cadastrar Produto" onPress={cadastrarProduto} />
+      <View style={{ marginTop: 10 }}>
+        <Button title="Cadastrar Produto" onPress={cadastrarProduto} color='gray' />
+      </View>
     </View>
   );
 }
