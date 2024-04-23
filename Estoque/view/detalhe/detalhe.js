@@ -32,39 +32,39 @@ const DetalhesDoProduto = ({ route }) => {
     };
 
     const confirmarAlteracao = () => {
-        setModalVisible(!modalVisible);
-        console.log('Quantidade selecionada:', quantity);
-        console.log('Tipo de ação:', actionType);
+        const quantidadeAtual = parseInt(productQuantity, 10);
+        const quantidadeAtualizada = parseInt(quantity,10);
+
+        console.log(quantidadeAtual, quantidadeAtualizada )
     
-        // Aqui você pode adicionar ou remover a quantidade selecionada do produto
-        if (actionType === 'adição' || actionType === 'remoção') {
-            fetch(`http://192.168.1.106:3000/products/${produto.id}/edit`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    quantity: parseInt(quantity, 10),
-                    userId: parseInt(usuario.id,10),
-                    tipo: String(actionType),
-                }),
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Produto atualizado com sucesso');
-                    fetchProductQuantity()
-                } else {
-                    console.error('Erro na atualização do produto');
-                }
-            })
-            .catch((error) => {
-                console.log(produto.id, quantity,usuario.id, actionType,)
-                console.error('Erro:', error);
-            });
+        if (quantidadeAtual - quantidadeAtualizada < 0) {
+            console.error('Erro: A quantidade de produtos não pode ser negativa');
+            return;
         }
     
-        // Reset actionType
-        setActionType(null);
+        fetch(`http://192.168.1.106:3000/products/${produto.id}/edit`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                quantity: quantidadeAtualizada,
+                userId: parseInt(usuario.id,10),
+                tipo: String(actionType),
+            }),
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Produto atualizado com sucesso');
+                fetchProductQuantity()
+            } else {
+                console.error('Erro na atualização do produto');
+            }
+        })
+        .catch((error) => {
+            console.log(produto.id, quantity,usuario.id, actionType,)
+            console.error('Erro:', error);
+        });
     };
 
 
