@@ -34,9 +34,6 @@ const ListaProdutos = ({ navigation, route }) => {
         <TouchableOpacity style={{...styles.newProduct,left: 30,}} onPress={() => navigation.navigate('Produto',{usuario})}>
             <Text style={styles.iconButton}>+</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.newProduct,right: 30,}} onPress={() => navigation.navigate('Cadastro')}>
-            <Text style={styles.iconButton}>+</Text>
-        </TouchableOpacity>
     </View>
 );
 };
@@ -52,7 +49,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 10,
         margin:5,
-        backgroundColor: '#B1B1B1',
+        backgroundColor: '#c1c1c1',
+        borderRadius:15
     },
 
     iconButton: {
