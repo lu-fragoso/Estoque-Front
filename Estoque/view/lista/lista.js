@@ -7,7 +7,7 @@ const ListaProdutos = ({ navigation, route }) => {
   const {usuario}  = route.params;
 
   useEffect(() => {
-    axios.get('http://192.168.1.106:3000/product')
+    axios.get('http://172.17.115.241:3000/product')
       .then(response => {
         setProdutos(response.data);
       })
@@ -25,14 +25,16 @@ const ListaProdutos = ({ navigation, route }) => {
                 <TouchableOpacity onPress={() => navigation.navigate('Detalhes', { produto: item , usuario})}>
                     <View style={styles.flat}>
                         <Text>{item.nome}</Text>
-                        <Text>{item.descricao}</Text>
-                        <Text>{item.valor}</Text>
+                        <Text>R$ {item.valor}</Text>
                     </View>
                 </TouchableOpacity>
             )}
         />
 
-        <TouchableOpacity style={styles.newProduct} onPress={() => navigation.navigate('Produto',{usuario})}>
+        <TouchableOpacity style={{...styles.newProduct,left: 30,}} onPress={() => navigation.navigate('Produto',{usuario})}>
+            <Text style={styles.iconButton}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.newProduct,right: 30,}} onPress={() => navigation.navigate('Cadastro')}>
             <Text style={styles.iconButton}>+</Text>
         </TouchableOpacity>
     </View>
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
     newProduct: {
       position: 'absolute',
       bottom:30,
-      left: 30,
+      
       width: 60,
       height: 60,
       borderRadius: 50,
