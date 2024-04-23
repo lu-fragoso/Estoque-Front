@@ -42,7 +42,7 @@ function CadastroUsuario() {
         secureTextEntry
         style={styles.input}
       />
-      <Button title="Cadastrar" onPress={cadastrar} />
+      <Button title="Cadastrar" onPress={cadastrar} color='gray'/>
     </View>
   );
 }
