@@ -8,31 +8,29 @@ Este é um aplicativo de estoque que permite gerenciar o inventário de produtos
 - Atualizar informações de produtos existentes
 - Remover produtos do estoque
 - Visualizar a lista de produtos disponíveis
-- Pesquisar produtos por nome, código ou categoria
 
 ## Requisitos
 
-- Node.js (versão X.X.X)
-- Banco de dados XYZ (versão X.X.X)
+- Node.js 
 
 ## Instalação
 
 1. Clone este repositório:
     git clone https://github.com/lu-fragoso/Estoque-Front.git
 
-2. Instale o Node.js (versão X.X.X) e o Banco de dados XYZ (versão X.X.X) se ainda não estiverem instalados.
+2. Instale o Node.js e o Banco de dados MySQL se ainda não estiverem instalados.
 
 3. Navegue até o diretório do projeto:
-    cd /c:/Users/Lucas/OneDrive/Documentos/Mind/Front
 
 4. Instale as dependências do projeto:
     npm install
 
-5. Instale o Expo CLI globalmente:
-    npm install -g expo-cli
+5. Realize a troca do IP nas telas do projeto:
+    Troque o IP 172.17.115.241 pelo de sua máquina que irá ser o host. É possivel visualizar o IP
+    pelo cmd e digitando o comando  ipconfig.
 
 6. Inicie o servidor de desenvolvimento:
-    expo start
+    npx expo start
 
 7. Abra o aplicativo Expo Go no seu dispositivo móvel e escaneie o código QR exibido no terminal ou na página aberta no navegador.
 

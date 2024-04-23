@@ -136,7 +136,8 @@ const DetalhesDoProduto = ({ navigation,route }) => {
         })
         .then(response => {
             if (response.ok) {
-                console.log('Produto atualizado com sucesso');
+                alert('Produto atualizado com sucesso');
+                setModalVisible(false)
                 fetchProductQuantity()
             } else {
                 console.error('Erro na atualização do produto');
@@ -156,8 +157,9 @@ const DetalhesDoProduto = ({ navigation,route }) => {
         />
         <Text style={styles.title}>{produto.nome}</Text>
         <Text style={styles.description}>{produto.descricao}</Text>
-        <Text style={styles.price}>{produto.valor}</Text>
-        <Text style={styles.quantity}>Quantidade: {productQuantity}</Text>
+        
+        <Text style={styles.price}>Valor: R$ {produto.valor}</Text>
+        <Text style={{...styles.price, marginBottom:20}}>Quantidade: {productQuantity}</Text>
 
 
         <FlatList
@@ -172,10 +174,18 @@ const DetalhesDoProduto = ({ navigation,route }) => {
           </View>
             )}
         />
-        <Button title="Remover Quantidade" onPress={removerProduto} />
-        <Button title="Adicionar Quantidade" onPress={adicionarProduto} />
-        <Button title="Editar Produto" onPress={editarProduto} />
-        <Button title="Excluir Produto" onPress={excluirProduto} />
+        <View style={{ flexDirection: 'row', justifyContent:'center',marginTop:20 ,marginBottom:20}}> 
+          <View style={{ marginRight: 10 }}>
+            <Button title="Remover Quantidade" onPress={removerProduto} color='gray'/>
+          </View>
+          <Button title="Adicionar Quantidade" onPress={adicionarProduto} color='gray'/>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent:'center'}}> 
+          <View style={{ marginRight: 10 }}>
+            <Button title="Editar Produto" onPress={editarProduto} color='gray'/>
+          </View>
+            <Button title="Excluir Produto" onPress={excluirProduto} color='red' />
+        </View>
 
         <Modal
           animationType="slide"
@@ -206,9 +216,13 @@ const DetalhesDoProduto = ({ navigation,route }) => {
             value={precoProduto.toString()}
             placeholder="Preço do Produto"
             keyboardType="numeric"
-          />
-               <Button title="Confirmar" onPress={confirmarEdicao} />
-               <Button title="Cancelar" onPress={()=> {setModalEditVisible(false)}} />
+          />  
+              <View style={{ flexDirection: 'row', justifyContent:'center'}}>
+                <View style={{ marginRight: 10 }}>
+                  <Button title="Cancelar" onPress={()=> {setModalEditVisible(false)}} color='red'/>
+                </View>
+                  <Button title="Confirmar" onPress={confirmarEdicao}  color='gray'/>
+              </View>
              </View>
            </View>
          </Modal>
@@ -233,6 +247,7 @@ const DetalhesDoProduto = ({ navigation,route }) => {
               <Button
                 title="Confirmar"
                 onPress={confirmarAlteracao}
+                color='gray'
               />
             </View>
           </View>
@@ -306,8 +321,8 @@ logText: {
   image: {
     width: 50, 
     height: 50, 
-    backgroundColor: '#ccc', 
-  },
+    backgroundColor: '#ccc',
+  }
 });
 
 export default DetalhesDoProduto;

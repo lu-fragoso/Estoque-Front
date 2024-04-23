@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const ListaProdutos = ({ navigation, route }) => {
+const ListaProdutosAdmin = ({ navigation, route }) => {
   const [produtos, setProdutos] = useState([]);
   const {usuario}  = route.params;
 
@@ -33,6 +33,9 @@ const ListaProdutos = ({ navigation, route }) => {
 
         <TouchableOpacity style={{...styles.newProduct,left: 30,}} onPress={() => navigation.navigate('Produto',{usuario})}>
             <Text style={styles.iconButton}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.newProduct,right: 30,width:80}} onPress={() => navigation.navigate('Cadastro')}>
+            <Text style={styles.iconButton}>+ User</Text>
         </TouchableOpacity>
     </View>
 );
@@ -73,4 +76,4 @@ const styles = StyleSheet.create({
   });
   
 
-export default ListaProdutos;
+export default ListaProdutosAdmin;
