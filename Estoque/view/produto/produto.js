@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, TextInput, View, StyleSheet, Alert } from 'react-native';
+import { Button, Image, TextInput, View, StyleSheet, Alert, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import axios from 'axios';
 
-export default function Produto() {
+export default function Produto({route}) {
+  const { usuario } = route.params;
+  
   const [produto, setProduto] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
@@ -48,8 +50,9 @@ export default function Produto() {
         type: 'image/jpeg', // ou o tipo correto da imagem
         name: 'image.jpg',
       });
+      formData.append('userId', usuario.id);
   
-      const response = await axios.post('http://172.17.112.215:3000/registerproduct', formData, {
+      const response = await axios.post('http://192.168.1.106:3000/registerproduct', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
