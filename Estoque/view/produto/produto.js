@@ -31,7 +31,7 @@ export default function Produto({route}) {
       quality: 1,
     });
 
-    console.log(result);
+    //console.log(result);
 
     if (!result.canceled) {
       setFoto(result.assets[0].uri);
@@ -52,7 +52,7 @@ export default function Produto({route}) {
       });
       formData.append('userId', usuario.id);
   
-      const response = await axios.post('http://192.168.1.106:3000/registerproduct', formData, {
+      const response = await axios.post('http://172.17.115.241:3000/registerproduct', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
