@@ -8,7 +8,7 @@ function CadastroUsuario() {
   const [senha, setSenha] = useState('');
 
   const cadastrar = () => {
-    axios.post('http://192.168.1.106:3000/register', { name: nome, email: email, password: senha })
+    axios.post('http://172.17.115.241:3000/register', { name: nome, email: email, password: senha })
     .then(response => {
       Alert.alert('Usuário cadastrado', `Nome: ${nome}, Email: ${email}`);
       setNome('');
