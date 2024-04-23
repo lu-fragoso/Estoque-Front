@@ -7,7 +7,7 @@ import CadastroUsuario from './view/usuario/usuario';
 import ListaProdutos from './view/lista/lista';
 import Login from './view/login/login';
 import DetalhesDoProduto from './view/detalhe/detalhe';
-import ListaProdutosAdmin from './view/listaAdm/lista';
+import ListaProdutosAdmin from './view/listaAdm/listaadm';
 
 const Stack = createStackNavigator();
 
