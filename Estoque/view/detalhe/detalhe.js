@@ -37,7 +37,7 @@ const DetalhesDoProduto = ({ route }) => {
 
         console.log(quantidadeAtual, quantidadeAtualizada )
     
-        if (quantidadeAtual - quantidadeAtualizada < 0) {
+        if (quantidadeAtual - quantidadeAtualizada < 0 && actionType === 'remoção') {
             console.error('Erro: A quantidade de produtos não pode ser negativa');
             return;
         }
