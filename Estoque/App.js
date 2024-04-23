@@ -7,6 +7,7 @@ import CadastroUsuario from './view/usuario/usuario';
 import ListaProdutos from './view/lista/lista';
 import Login from './view/login/login';
 import DetalhesDoProduto from './view/detalhe/detalhe';
+import ListaProdutosAdmin from './view/listaAdm/lista';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
       <Stack.Screen name="Lista" component={ListaProdutos} />
       <Stack.Screen name="Produto" component={Produto} />
       <Stack.Screen name="Detalhes" component={DetalhesDoProduto} />
+      <Stack.Screen name="ListaAdm" component={ListaProdutosAdmin} />
     </Stack.Navigator>
   </NavigationContainer>
   );
